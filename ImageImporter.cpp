@@ -1,6 +1,9 @@
 
 #include "ImageImporter.h"
 
+#include <stdexcept>
+#include <opencv2/highgui.hpp> 
+
 #define BMP_FORMAT ".bmp"
 #define JPG_FORMAT ".jpg"
 #define PNG_FORMAT ".png"

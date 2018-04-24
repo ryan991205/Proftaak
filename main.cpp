@@ -22,7 +22,7 @@ int main( int argc, char** argv )
   
   // haal errors weg en zet deze in file
   std::freopen ("RuntimeErrors.txt","w",stderr);
-   
+  
 
   // Camera -------------------------------------------------------
   cv::Mat cameraImage;
@@ -69,23 +69,17 @@ int main( int argc, char** argv )
     //cv::imshow("ImageImporterShow", imageFromFile);
   }
 
-// ColorFilter -------------------------------------------------
+ // ColorFilter -------------------------------------------------
  
  //cv::cvtColor(imageFromFile, imageFromFile, CV_BGR2HSV);
  //cv::Mat filteredImage = ColorFilter::GetFilteredImage(Red, imageFromFile);
-//
+ //
  //if(filteredImage.data != NULL)
  // {
  //   cv::namedWindow("FilteredImageShow",1);
  //   cv::imshow("FilteredImageShow", filteredImage);
  //
  // }
-
-
-
-
-
-  
 
  /*/ ReferencepointFinder -------------------------------------------------
   ReferencePointFinder* refFinder =  new ReferencePointFinder();

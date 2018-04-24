@@ -3,9 +3,7 @@
 #define CAMERA_H_
 
 #include <stdexcept>
-
 #include <opencv2/core.hpp>           // data structures and arithmetic routines.
-#include <opencv2/videoio.hpp>
 
 
 class Camera

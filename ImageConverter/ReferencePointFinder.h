@@ -1,17 +1,13 @@
 #ifndef REFERENCEPOINTFINDER_H
 #define REFERENCEPOINTFINDER_H
 
-#include <stdexcept>
 #include <vector>
-
-#include <opencv2/core/core.hpp>     // Core Fetures of Open CV
-#include <opencv2/imgproc.hpp>  	// image processing functions.
+#include <opencv2/core/core.hpp>
 
 class ReferencePointFinder 
 {
 private:
 	cv::Point2i FindRefPoint(cv::Mat image);
-
 
 public:
 

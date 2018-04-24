@@ -2,7 +2,6 @@
 #define COLORFILTER_H
 
 #include <opencv2/core/core.hpp>     // Core Fetures of Open CV
-#include <opencv2/imgproc.hpp>  	// image processing functions.
 
 enum Color { Blue, Green, Red };
 
