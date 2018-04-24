@@ -1,6 +1,6 @@
 
 #include "Camera.h"
-#include <opencv2/videoio.hpp>
+
 
 Camera::Camera(int cameraNumber)
 {
