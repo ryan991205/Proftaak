@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <opencv2/core/core.hpp>     // Core Fetures of Open CV
-
+#include <opencv2/imgproc.hpp>  	// image processing functions.
 
 class ReferencePointFinder 
 {
@@ -14,10 +14,12 @@ private:
 
 
 public:
+
+	ReferencePointFinder() {};
 	cv::Point2i GetBeginPointMaze(cv::Mat image);
 	cv::Point2i GetEndPointMaze(cv::Mat image);
 
-    std::vector<cv::Point2i> GetEdgePoints(cv::Mat image);
+	std::vector<cv::Point2i> GetEdgePoints(cv::Mat image);
 };
 
 #endif

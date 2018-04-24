@@ -1,7 +1,12 @@
+#include <opencv2/core.hpp>           // data structures and arithmetic routines.
+#include <opencv2/highgui.hpp>        // Image display, sliders, buttons, mouse & IO.
+#include <opencv2/imgproc.hpp>        // image processing functions.
+#include <opencv2/features2d.hpp>     // two dimentsional feature tracking support.
+#include "opencv2/imgcodecs.hpp"
+
 #include "ReferencePointFinder.h"
 #include "ColorFilter.h"
-
-#include <opencv2/imgproc.hpp>  	// image processing functions.
+#include <iostream>
 
 
 #define EXPECTED_REFERENCEVECTORS 4
@@ -43,10 +48,11 @@ std::vector<cv::Point2i> ReferencePointFinder::GetEdgePoints(cv::Mat image)
 
 	std::vector<cv::Vec3f> referenceVectors;
 	cv::HoughCircles(filteredImage, referenceVectors, CV_HOUGH_GRADIENT, 1, filteredImage.rows/8, 100, 20, 0, 0);
-
+	
 
   	if(referenceVectors.size() != EXPECTED_REFERENCEVECTORS)
   	{
+		
     	throw std::out_of_range("referenceVectors");
   	}
 

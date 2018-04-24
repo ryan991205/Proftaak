@@ -11,6 +11,11 @@
 
 #include "Camera.h"
 #include "ImageImporter.h"
+#include "ImageConverter/ColorFilter.h"
+#include "ImageConverter/ReferencePointFinder.h"
+#include "ImageConverter/ImageCropper.h"
+
+
 
 int main( int argc, char** argv ) 
 {
@@ -41,11 +46,7 @@ int main( int argc, char** argv )
     cv::imshow("cameraShow", cameraImage);
   }
 
-  // End Camera --------------------------------------------------
-
-
-  
-
+// End Camera --------------------------------------------------
 
 // ImageImporter -------------------------------------------------
 
@@ -54,7 +55,7 @@ int main( int argc, char** argv )
   try
   {
     imageImporter = new ImageImporter();
-    imageFromFile = imageImporter->getImage("/home/ryan991205/Documents/Images/Ryan.jpg");
+    imageFromFile = imageImporter->getImage("1.jpg");
   }
   catch(std::invalid_argument)
   {
@@ -64,10 +65,38 @@ int main( int argc, char** argv )
 
   if(imageFromFile.data != NULL)
   {
-    cv::namedWindow("ImageImporterShow",1);
-    cv::imshow("ImageImporterShow", imageFromFile);
+    //cv::namedWindow("ImageImporterShow",1);
+    //cv::imshow("ImageImporterShow", imageFromFile);
   }
 
+// ColorFilter -------------------------------------------------
+ 
+ //cv::cvtColor(imageFromFile, imageFromFile, CV_BGR2HSV);
+ //cv::Mat filteredImage = ColorFilter::GetFilteredImage(Red, imageFromFile);
+//
+ //if(filteredImage.data != NULL)
+ // {
+ //   cv::namedWindow("FilteredImageShow",1);
+ //   cv::imshow("FilteredImageShow", filteredImage);
+ //
+ // }
+
+
+
+
+
+  
+
+ /*/ ReferencepointFinder -------------------------------------------------
+  ReferencePointFinder* refFinder =  new ReferencePointFinder();
+  std::vector<cv::Point2i> referencePoints = refFinder->GetEdgePoints(imageFromFile);
+
+ */
+ // ImageCropper -------------------------------------------------
+
+  cv::Mat crop = ImageCropper::CropToEdgePoints(imageFromFile);
+  cv::imshow("CroppedImage", crop);
   cv::waitKey(0);
-  return 0;
+   return 0;
 }
+
