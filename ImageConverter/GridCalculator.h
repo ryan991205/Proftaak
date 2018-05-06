@@ -5,12 +5,16 @@
 
 class GridCalculator {
 private: 
-cv::Mat filterLines_blackHat(int kernelSize, int threshold);
+cv::Mat FilterImage(cv::Mat image, int kernelSize, int blackwhiteThreshold);
+std::vector<cv::Vec2f> GenerateGridLines(cv::Mat filteredImage, int lineThreshold);
+cv::Mat PlotLinesOnImage(cv::Mat image, std::vector<cv::Vec2f> lines);
 
 
 public:
-GridCalculator(cv::Mat image, int lineThreshold);
+GridCalculator();
 
+std::vector<cv::Vec2f> GenerateGridLines(cv::Mat input_image, cv::Mat *output_image, int kernelSize, 
+                                                         int blackWhiteThreshold, int lineThreshold);
 
 };
 
