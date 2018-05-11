@@ -115,7 +115,7 @@ cv::Mat GridCalculator::Plot(cv::Mat image, std::vector<Line>lines)
         cv::Point bP = cv::Point(lines.at(i).beginPoint.x,lines.at(i).beginPoint.y);
         cv::Point eP = cv::Point(lines.at(i).endPoint.x,lines.at(i).endPoint.y);
         
-		cv::line(im, bP, eP, cv::Scalar(10, 10, 120), 1, CV_AA);
+		cv::line(im, bP, eP, cv::Scalar(10, 10, 50), 1, CV_AA);
 	}
     return im;
 }

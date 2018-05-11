@@ -16,14 +16,17 @@
 	std::vector<cv::Vec3f> referenceVectors;
 	cv::GaussianBlur(image, image, cv::Size(9, 9), 2, 2);
 	cv::HoughCircles(image, referenceVectors, CV_HOUGH_GRADIENT, 1, image.rows/8, 100, 10, 0, 0);
+
+	Point2i p;
+
 	if(referenceVectors.size() != 1)
 	{
-		throw std::out_of_range("referenceVectors");
+		return p;
 	}
 	cv::Point2i center(std::ceil(referenceVectors[0][0]), 
 					   std::ceil(referenceVectors[0][1]));
 
-	Point2i p;
+	
 	p.x = center.x;
 	p.y = center.y;
 	

@@ -23,10 +23,12 @@ void ScanSettings( int, void* );
 int kernelSize            = 5;
 int blackWhiteThreshold   = 38;
 int lineThreshold         = 80;
+int walllThreshold        = 80;
 
 int const max_kernelSize            = 10;
 int const max_blackWhiteThreshold   = 100;
 int const max_lineThreshold         = 200;
+int const max_walllThreshold        = 250;
 
 const char* Window_ScannerOutput = "Scanner Output:";
 
@@ -90,11 +92,13 @@ int main( int argc, char** argv )
 // Start userinterface ---------------------------------------------
   cv::namedWindow( Window_ScannerOutput, CV_WINDOW_AUTOSIZE );
 
-  cv::createTrackbar( "KernelSize:  ", Window_ScannerOutput, &kernelSize, max_kernelSize,ScanSettings);
-  cv::createTrackbar( "BW   Threshold:  ", Window_ScannerOutput, &blackWhiteThreshold, max_blackWhiteThreshold,ScanSettings);
-  cv::createTrackbar( "Line Threshold:  ", Window_ScannerOutput, &lineThreshold, max_lineThreshold,ScanSettings);
+  cv::createTrackbar( "Linesize:  ", Window_ScannerOutput, &kernelSize, max_kernelSize,ScanSettings);
+  cv::createTrackbar( "Lighting Sensisitity:  ", Window_ScannerOutput, &blackWhiteThreshold, max_blackWhiteThreshold,ScanSettings);
+  cv::createTrackbar( "Line detection Senitivity:  ", Window_ScannerOutput, &lineThreshold, max_lineThreshold,ScanSettings);
+  cv::createTrackbar( "Wall detection Senitivity:  ", Window_ScannerOutput, &walllThreshold, max_walllThreshold,ScanSettings);
 // ------------------------------------------------------------------
 
+  ScanSettings( 0,NULL);
 
   cv::waitKey(0);
    return 0;
@@ -103,6 +107,8 @@ int main( int argc, char** argv )
 
 void ScanSettings( int, void* )
 {
+  if(kernelSize < 1)  kernelSize = 0;
+
   cv::cvtColor(Image, Image, CV_BGR2HSV);
   try
   {
@@ -110,13 +116,12 @@ void ScanSettings( int, void* )
   }
   catch(std::exception& e)
   {
-    std::cout << "ERROR ! @#" << std::endl;
+    std::cout << "ERROR ! cannot find A4 references" << std::endl;
   }
 
   cv::Mat gridImage;
   lines.clear();
   lines = GridCalculator::Calculate(Image,NULL,kernelSize,blackWhiteThreshold,lineThreshold);
-  std::cout << "SIZE: " << lines.size()<< std::endl;
   for(size_t selectedline = 0; selectedline < lines.size(); ++selectedline)
   { 
         lines.at(selectedline).beginPoint.x -= offset.x;
@@ -128,12 +133,13 @@ void ScanSettings( int, void* )
   WallVectorsCalculator MazeCalculator = WallVectorsCalculator();
   
   std::vector<Line> walls;
-  MazeCalculator.Calculate(&walls,lines,CropedImage);
+
+  cv::cvtColor(CropedImage, CropedImage, CV_HSV2BGR);
+  MazeCalculator.Calculate(&walls,lines,CropedImage, walllThreshold);
+  cv::cvtColor(CropedImage, CropedImage, CV_BGR2HSV);
 
 
-
-
-
+  MazeCalculator.Draw(&CropedImage,walls);
 
 
 
