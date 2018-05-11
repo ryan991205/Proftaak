@@ -2,49 +2,58 @@
 #include "ColorFilter.h"
 
 #include <stdexcept>
-#include <opencv2/imgproc.hpp>  
+#include <opencv2/imgproc.hpp> 
+
+// DEBUG
+#include <iostream>
+#include <stdio.h>
+#include <opencv2/highgui.hpp>
 
 #define EXPECTED_REFERENCEVECTORS 4 	// four points of paper
 
-cv::Point2i ReferencePointFinder::FindRefPoint(cv::Mat image)
+ Point2i ReferencePointFinder::Find(cv::Mat image)
 {
 	std::vector<cv::Vec3f> referenceVectors;
-	cv::HoughCircles(image, referenceVectors, CV_HOUGH_GRADIENT, 1, image.rows/8, 100, 20, 0, 0);
-
+	cv::GaussianBlur(image, image, cv::Size(9, 9), 2, 2);
+	cv::HoughCircles(image, referenceVectors, CV_HOUGH_GRADIENT, 1, image.rows/8, 100, 10, 0, 0);
 	if(referenceVectors.size() != 1)
 	{
 		throw std::out_of_range("referenceVectors");
 	}
-
 	cv::Point2i center(std::ceil(referenceVectors[0][0]), 
 					   std::ceil(referenceVectors[0][1]));
-	return center;
+
+	Point2i p;
+	p.x = center.x;
+	p.y = center.y;
+	
+	return p;
 }
 
 
-cv::Point2i ReferencePointFinder::GetBeginPointMaze(cv::Mat image) 
+Point2i ReferencePointFinder::GetBeginPointMaze(cv::Mat image) 
 {
 	cv::Mat filteredImage = ColorFilter::GetFilteredImage(Blue,image);
-	return FindRefPoint(filteredImage);
+	return Find(filteredImage);
 }
 
 
-cv::Point2i ReferencePointFinder::GetEndPointMaze(cv::Mat image)
+Point2i ReferencePointFinder::GetEndPointMaze(cv::Mat image)
 {
 	cv::Mat filteredImage = ColorFilter::GetFilteredImage(Green,image);
-	return FindRefPoint(filteredImage);
+	return Find(filteredImage);
 }
 
 
 std::vector<cv::Point2i> ReferencePointFinder::GetEdgePoints(cv::Mat image) 
 {
 	cv::Mat filteredImage = ColorFilter::GetFilteredImage(Red,image);
+	
 	cv::GaussianBlur(filteredImage, filteredImage, cv::Size(9, 9), 2, 2);
 
 	std::vector<cv::Vec3f> referenceVectors;
 	cv::HoughCircles(filteredImage, referenceVectors, CV_HOUGH_GRADIENT, 1, 
 					 filteredImage.rows/8, 100, 20, 0, 0);
-	
 
   	if(referenceVectors.size() != EXPECTED_REFERENCEVECTORS)
   	{	

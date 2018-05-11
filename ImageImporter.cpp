@@ -30,5 +30,3 @@ cv::Mat ImageImporter::getImage(const std::string& fileName)
 
   return image;
 }
-
-

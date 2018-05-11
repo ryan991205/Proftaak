@@ -4,8 +4,6 @@
 
 Camera::Camera(int cameraNumber)
 {
-
-
   if(cameraNumber < 0)
   {
     throw std::out_of_range("cameraNumber");
@@ -21,6 +19,7 @@ Camera::Camera(int cameraNumber)
 
 }
 
+
 cv::Mat Camera::getImage()
 {
   if(!CaptureDevice.isOpened())
@@ -32,6 +31,3 @@ cv::Mat Camera::getImage()
   CaptureDevice >> image;
   return image;
 }
-
-
-

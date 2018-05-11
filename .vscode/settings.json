@@ -35,6 +35,14 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "complex": "cpp",
+        "cwctype": "cpp",
+        "functional": "cpp",
+        "sstream": "cpp"
     }
 }

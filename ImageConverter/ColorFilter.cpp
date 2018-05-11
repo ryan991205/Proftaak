@@ -2,12 +2,12 @@
 #include "ColorFilter.h"
 #include <opencv2/imgproc.hpp>
 
-
+//debug
+#include <opencv2/highgui.hpp> 
 
 
 cv::Mat ColorFilter::GetFilteredImage(Color color, cv::Mat image) 
 {
- 
   cv::Mat lowFilteredImage;
   cv::Mat highFilteredImage;
   switch(color)

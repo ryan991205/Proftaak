@@ -1,21 +1,28 @@
 #include "ImageCropper.h"
 #include "ReferencePointFinder.h"
 
+#include <iostream>
+#include <stdio.h>
+
 #define cropOffset 20
 
-cv::Mat ImageCropper::CropToEdgePoints(cv::Mat image) 
+Point2i ImageCropper::CropToEdgePoints(cv::Mat* outputImage, cv::Mat inputImage) 
 {
-	
- 	cv::cvtColor(image, image, CV_BGR2HSV);
-
 	ReferencePointFinder* refFinder = new ReferencePointFinder();
+	std::vector<cv::Point2i> edgePoints = refFinder->GetEdgePoints(inputImage);
 
-	std::vector<cv::Point2i> edgePoints = refFinder->GetEdgePoints(image);
+	cv::Rect roi = FindRegionOfInterest(edgePoints);
+	Point2i offset;
 
-	cv::Rect roi = FindRegionOfInterest(edgePoints);	
-    cv::Mat crop = image(roi);
-	  cv::cvtColor(crop, crop, CV_HSV2BGR);
-	return crop;
+	offset.x = roi.x;
+	offset.y = roi.y;
+	
+	cv::Mat out = inputImage.clone();
+	*outputImage = out(roi);
+
+	delete refFinder;
+
+	return offset;
 }
 
 
@@ -28,7 +35,7 @@ cv::Rect ImageCropper::FindRegionOfInterest(std::vector<cv::Point2i> referencePo
 
 	int low_X =  referencePoints.at(0).x;
 	int high_X = referencePoints.at(0).x;
-	for(int i = 1; i < referencePoints.size() ; i++)
+	for(uint i = 1; i < referencePoints.size() ; i++)
 	{
 		if(referencePoints.at(i).x > high_X )
 		{
@@ -43,7 +50,7 @@ cv::Rect ImageCropper::FindRegionOfInterest(std::vector<cv::Point2i> referencePo
 
 	int low_y =  referencePoints.at(0).y;
 	int high_y  = referencePoints.at(0).y;
-	for(int i = 1; i < referencePoints.size() ; i++)
+	for(uint i = 1; i < referencePoints.size() ; i++)
 	{
 		if(referencePoints.at(i).y > high_y )
 		{
